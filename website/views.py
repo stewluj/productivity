@@ -95,3 +95,22 @@ def paired_calendar():
     paired_user = current_user.paired_user
     events = CalendarEvent.query.filter_by(user_id=paired_user.id).order_by(CalendarEvent.time).all()
     return render_template("paired_calendar.html", user=current_user, paired_user=paired_user, events=events)
+
+@views.route('/delete-event', methods=['POST'])
+@login_required
+def delete_event():
+    event_data = json.loads(request.data)
+    event_id = event_data.get('eventId')
+    event = CalendarEvent.query.get(event_id)
+    print(f"Received request to delete event: {event_id}")  # Debug info
+
+    if event and event.user_id == current_user.id:
+        db.session.delete(event)
+        db.session.commit()
+        flash('Event deleted!', category='success')
+        return jsonify({"success": True})
+    else:
+        print(f"Event deletion failed. Event: {event}, User: {current_user.id}")
+        flash('Event not found or unauthorized.', category='error')
+        return jsonify({"success": False, "error": "Event not found or unauthorized"}), 403
+

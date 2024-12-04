@@ -20,6 +20,11 @@
     {% for event in events %}
     <li class="list-group-item">
         <strong>{{ event.name }}</strong> - {{ event.time.strftime('%Y-%m-%d %H:%M:%S') }}
+        <button
+            class="btn btn-danger btn-sm float-right"
+            onClick="deleteEvent('{{ event.id }}')">
+            Delete
+        </button>
     </li>
     {% endfor %}
 </ul>
