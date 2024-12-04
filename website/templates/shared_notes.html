@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Shared Notes{% endblock %}
+{% block content %}
+<h1>Shared Notes</h1>
+{% if notes %}
+<ul class="list-group list-group-flush">
+    {% for note in notes %}
+    <li class="list-group-item">{{ note.data }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No shared notes available.</p>
+{% endif %}
+{% endblock %}
