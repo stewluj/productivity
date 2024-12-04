@@ -14,7 +14,6 @@
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       crossorigin="anonymous"
     />
-
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
@@ -31,6 +30,8 @@
         <div class="navbar-nav">
           {% if user.is_authenticated %}
           <a class="nav-item nav-link" id="home" href="/">Home</a>
+          <a class="nav-item nav-link" id="calendar" href="/calendar">My Calendar</a>
+          <a class="nav-item nav-link" id="paired-calendar" href="/paired-calendar">Paired Calendar</a>
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
@@ -44,14 +45,14 @@
     {% if messages %}
     {% for category, message in messages %}
     {% if category == 'error' %}
-    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+    <div class="alert alert-danger alert-dismissable fade show" role="alert">
       {{ message }}
       <button type="button" class="close" data-dismiss="alert">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     {% else %}
-    <div class="alert alert-success alter-dismissable fade show" role="alert">
+    <div class="alert alert-success alert-dismissable fade show" role="alert">
       {{ message }}
       <button type="button" class="close" data-dismiss="alert">
         <span aria-hidden="true">&times;</span>

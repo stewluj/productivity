@@ -16,7 +16,14 @@ class User(db.Model, UserMixin):
     notes = db.relationship('Note')
     paired_user_id = db.Column(
         db.Integer,
-        db.ForeignKey('user.id', name='fk_user_paired_user_id'),  # Add constraint name
+        db.ForeignKey('user.id', name='fk_user_paired_user_id'),
         nullable=True
     )
     paired_user = db.relationship('User', remote_side=[id])
+
+class CalendarEvent(db.Model):
+    __tablename__ = 'calendar_event'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    time = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
