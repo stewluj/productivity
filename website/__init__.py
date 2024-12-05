@@ -11,6 +11,8 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['VERSION'] = '1.0'  # Cache versioning
+
     db.init_app(app)
     migrate.init_app(app, db)
 
