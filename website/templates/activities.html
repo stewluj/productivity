@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}My Activities{% endblock %}
+{% block content %}
+<h1>My Activities</h1>
+<ul id="activity-list">
+    <!--Add delete button for each activity-->
+    {% for activity in activities %}
+    <li>
+        {{ activity.name }} - {{ activity.address }}
+        <button onclick="deleteActivity('{{ activity.id }}')">Delete</button>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Add New Activity</h2>
+<form method="POST">
+    <!--FOrm for adding new activity-->
+    <input type="text" name="name" placeholder="Activity Name" required />
+    <input type="text" name="address" placeholder="Address" required />
+    <button type="submit">Add</button>
+</form>
+
+<h2>Find Place</h2>
+<form id="find-place-form">
+    <input type="text" name="query" placeholder="Search for a place" required />
+    <button type="submit">Search</button>
+</form>
+<div id="search-results"></div>
+
+<script>
+document.getElementById('find-place-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const query = e.target.query.value;
+
+    try {
+        //send a post request to server w/ search query
+        const response = await fetch('/find-place', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query }),
+        });
+        //parese JSON repsone from server
+        const data = await response.json();
+        //display results
+        if (data.candidates) {
+            const results = data.candidates
+                .map(candidate => `<p>${candidate.name}, ${candidate.formatted_address}</p>`)
+                .join('');
+            document.getElementById('search-results').innerHTML = results;
+        } else {
+            document.getElementById('search-results').innerHTML = `<p>${data.error || 'No results found.'}</p>`;
+        }
+    } catch (err) {
+        document.getElementById('search-results').innerHTML = `<p>Error occurred: ${err.message}</p>`;
+    }
+});
+</script>
+{% endblock %}

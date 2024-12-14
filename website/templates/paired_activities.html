@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Paired User's Activities{% endblock %}
+{% block content %}
+<h1>{{ paired_user.first_name }}'s Activities</h1>
+<ul>
+    {% for activity in activities %}
+    <li>{{ activity.name }} - {{ activity.address }}</li>
+    {% endfor %}
+</ul>
+<a href="/activities" class="btn btn-secondary">Back to My Activities</a>
+{% endblock %}

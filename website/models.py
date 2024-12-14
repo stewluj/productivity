@@ -1,13 +1,14 @@
+#imports
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
-
+# define not model
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.String(10000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
+#define user model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True)
@@ -20,10 +21,17 @@ class User(db.Model, UserMixin):
         nullable=True
     )
     paired_user = db.relationship('User', remote_side=[id])
-
+# define calendar event model
 class CalendarEvent(db.Model):
     __tablename__ = 'calendar_event'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     time = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+#define locationactivity model
+class LocationActivity(db.Model):
+    __tablename__ = 'location_activity'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    address = db.Column(db.String(255), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
